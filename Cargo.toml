@@ -1,8 +1,10 @@
 [package]
-name = "rust-swf-fixed"
+name = "swf-fixed"
 version = "0.1.0"
+description = "Fixed point numbers for SWF"
 authors = ["Charles Samborski <demurgos@demurgos.net>"]
 edition = "2018"
+license = "MIT"
 
 [dependencies]
 serde = "^1.0.80"
