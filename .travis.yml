@@ -1,0 +1,9 @@
+language: rust
+os:
+  - linux
+script:
+  - cargo build
+  - cargo test
+
+notifications:
+  email: false
