@@ -7,7 +7,7 @@
 
 [![crates.io](https://img.shields.io/crates/v/swf-fixed.svg?maxAge=86400)](https://crates.io/crates/swf-fixed)
 [![GitHub repository](https://img.shields.io/badge/Github-open--flash%2Frust--swf--fixed-blue.svg?maxAge=86400)](https://github.com/open-flash/rust-swf-fixed)
-[![Build status](https://img.shields.io/travis/open-flash/swf-fixed/master.svg?maxAge=86400)](https://travis-ci.org/open-flash/swf-fixed)
+[![Build status](https://img.shields.io/travis/open-flash/rust-swf-fixed/master.svg?maxAge=86400)](https://travis-ci.org/open-flash/rust-swf-fixed)
 
 SWF fixed-point numbers for Rust.
 
