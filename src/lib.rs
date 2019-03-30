@@ -1,8 +1,8 @@
-use serde::{Serialize, Serializer, Deserialize, Deserializer};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 macro_rules! fixed_point_impl {
   ($name:ident, $int_bits:expr, $frac_bits:expr, $epsilons_type:ty, $value_type:ty) => {
-    #[derive(PartialEq, Eq, Debug)]
+    #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct $name {
       epsilons: $epsilons_type,
     }
@@ -40,31 +40,32 @@ fixed_point_impl!(Ufixed16P16, 16, 16, u32, f64);
 
 #[cfg(test)]
 mod tests {
-    use super::Sfixed16P16;
-    use super::Ufixed8P8;
-    use serde_json;
+  use serde_json;
 
-    #[test]
-    fn test_eq() {
-        assert_eq!(Sfixed16P16::from_epsilons(3), Sfixed16P16::from_epsilons(3));
-    }
+  use super::Sfixed16P16;
+  use super::Ufixed8P8;
 
-    #[test]
-    fn test_json_serde_serialization() {
-        assert_eq!(serde_json::to_string(&Sfixed16P16::from_epsilons(3)).unwrap(), "3");
-    }
+  #[test]
+  fn test_eq() {
+    assert_eq!(Sfixed16P16::from_epsilons(3), Sfixed16P16::from_epsilons(3));
+  }
 
-    #[test]
-    fn test_json_serde_deserialization() {
-        assert_eq!(serde_json::from_str::<Sfixed16P16>("0").unwrap(), Sfixed16P16::from_epsilons(0));
-        assert_eq!(serde_json::from_str::<Sfixed16P16>("3").unwrap(), Sfixed16P16::from_epsilons(3));
-        assert_eq!(serde_json::from_str::<Sfixed16P16>("65536").unwrap(), Sfixed16P16::from_epsilons(65536));
-        assert_eq!(serde_json::from_str::<Sfixed16P16>("2147483647").unwrap(), Sfixed16P16::from_epsilons(2147483647));
-        assert_eq!(serde_json::from_str::<Sfixed16P16>("-2147483648").unwrap(), Sfixed16P16::from_epsilons(-2147483648));
-    }
+  #[test]
+  fn test_json_serde_serialization() {
+    assert_eq!(serde_json::to_string(&Sfixed16P16::from_epsilons(3)).unwrap(), "3");
+  }
 
-    #[test]
-    fn test_ufixed8p8() {
-        assert_eq!(serde_json::from_str::<Ufixed8P8>("6144").unwrap(), Ufixed8P8::from_value(24f32));
-    }
+  #[test]
+  fn test_json_serde_deserialization() {
+    assert_eq!(serde_json::from_str::<Sfixed16P16>("0").unwrap(), Sfixed16P16::from_epsilons(0));
+    assert_eq!(serde_json::from_str::<Sfixed16P16>("3").unwrap(), Sfixed16P16::from_epsilons(3));
+    assert_eq!(serde_json::from_str::<Sfixed16P16>("65536").unwrap(), Sfixed16P16::from_epsilons(65536));
+    assert_eq!(serde_json::from_str::<Sfixed16P16>("2147483647").unwrap(), Sfixed16P16::from_epsilons(2147483647));
+    assert_eq!(serde_json::from_str::<Sfixed16P16>("-2147483648").unwrap(), Sfixed16P16::from_epsilons(-2147483648));
+  }
+
+  #[test]
+  fn test_ufixed8p8() {
+    assert_eq!(serde_json::from_str::<Ufixed8P8>("6144").unwrap(), Ufixed8P8::from_value(24f32));
+  }
 }
