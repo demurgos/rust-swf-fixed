@@ -3,7 +3,7 @@
     alt="Open Flash logo" title="Open Flash" align="right" width="64" height="64" />
 </a>
 
-# SWF Parser (Typescript)
+# SWF Fixed
 
 [![crates.io](https://img.shields.io/crates/v/swf-fixed.svg?maxAge=86400)](https://crates.io/crates/swf-fixed)
 [![GitHub repository](https://img.shields.io/badge/Github-open--flash%2Frust--swf--fixed-blue.svg?maxAge=86400)](https://github.com/open-flash/rust-swf-fixed)
