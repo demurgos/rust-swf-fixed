@@ -41,8 +41,9 @@ fn main() {
   let a = Sfixed8P8::from_epsilons(256);
   let b = Sfixed8P8::from_value(1f32);
   assert_eq!(a, b);
-  let value: f32 = a.into();
-  assert_eq!(value, 1.0f32);
+  let sum: Sfixed8P8 = (a + b);
+  let sum_value: f32 = sum.into();
+  assert_eq!(sum_value, 2.0f32);
 }
 ```
 

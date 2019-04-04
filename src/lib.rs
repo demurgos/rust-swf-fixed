@@ -25,6 +25,34 @@ macro_rules! fixed_point_impl {
       }
     }
 
+    impl ::std::ops::Add<$name> for $name {
+      type Output = $name;
+
+      fn add(self, rhs: $name) -> $name {
+        &self + &rhs
+      }
+    }
+
+    impl<'a, 'b> ::std::ops::Add<&'b $name> for &'a $name {
+      type Output = $name;
+
+      fn add(self, rhs: &'b $name) -> $name {
+        $name { epsilons: self.epsilons + rhs.epsilons }
+      }
+    }
+
+    impl ::std::ops::AddAssign<$name> for $name {
+      fn add_assign(&mut self, rhs: $name) -> () {
+        self.add_assign(&rhs)
+      }
+    }
+
+    impl<'a> ::std::ops::AddAssign<&'a $name> for $name {
+      fn add_assign(&mut self, rhs: &'a $name) -> () {
+        self.epsilons.add_assign(rhs.epsilons)
+      }
+    }
+
     impl Serialize for $name {
       fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: Serializer {
         self.epsilons.serialize(serializer)
@@ -88,5 +116,23 @@ mod tests {
   #[test]
   fn test_ufixed16p16_value() {
     assert_eq!(f64::from(Ufixed16P16::from_value(1000f64)), 1000f64);
+  }
+
+  #[test]
+  fn test_add_ufixed8p8() {
+    assert_eq!(Ufixed8P8::from_value(0f32) + Ufixed8P8::from_value(0f32), Ufixed8P8::from_value(0f32));
+    assert_eq!(Ufixed8P8::from_value(0f32) + Ufixed8P8::from_value(1f32), Ufixed8P8::from_value(1f32));
+    assert_eq!(Ufixed8P8::from_value(1f32) + Ufixed8P8::from_value(0f32), Ufixed8P8::from_value(1f32));
+    assert_eq!(Ufixed8P8::from_value(1f32) + Ufixed8P8::from_value(1f32), Ufixed8P8::from_value(2f32));
+    assert_eq!(Ufixed8P8::from_value(0.5f32) + Ufixed8P8::from_value(0.5f32), Ufixed8P8::from_value(1f32));
+  }
+
+  #[test]
+  fn test_add_ufixed8p8_ref() {
+    assert_eq!(&Ufixed8P8::from_value(0f32) + &Ufixed8P8::from_value(0f32), Ufixed8P8::from_value(0f32));
+    assert_eq!(&Ufixed8P8::from_value(0f32) + &Ufixed8P8::from_value(1f32), Ufixed8P8::from_value(1f32));
+    assert_eq!(&Ufixed8P8::from_value(1f32) + &Ufixed8P8::from_value(0f32), Ufixed8P8::from_value(1f32));
+    assert_eq!(&Ufixed8P8::from_value(1f32) + &Ufixed8P8::from_value(1f32), Ufixed8P8::from_value(2f32));
+    assert_eq!(&Ufixed8P8::from_value(0.5f32) + &Ufixed8P8::from_value(0.5f32), Ufixed8P8::from_value(1f32));
   }
 }
