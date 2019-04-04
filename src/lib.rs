@@ -4,7 +4,7 @@ macro_rules! fixed_point_impl {
   ($name:ident, $int_bits:expr, $frac_bits:expr, $epsilons_type:ty, $value_type:ty) => {
     #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct $name {
-      epsilons: $epsilons_type,
+      pub epsilons: $epsilons_type,
     }
 
     impl $name {
@@ -66,6 +66,6 @@ mod tests {
 
   #[test]
   fn test_ufixed8p8() {
-    assert_eq!(serde_json::from_str::<Ufixed8P8>("6144").unwrap(), Ufixed8P8::from_value(24f32));
+    assert_eq!(Ufixed8P8::from_value(24f32).epsilons, 6144);
   }
 }
