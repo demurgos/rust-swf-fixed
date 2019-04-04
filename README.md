@@ -39,8 +39,10 @@ use swf_fixed::Sfixed8P8;
 
 fn main() {
   let a = Sfixed8P8::from_epsilons(256);
-  let b = Sfixed8P8::from_value(1);
+  let b = Sfixed8P8::from_value(1f32);
   assert_eq!(a, b);
+  let value: f32 = a.into();
+  assert_eq!(value, 1.0f32);
 }
 ```
 

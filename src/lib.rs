@@ -19,6 +19,12 @@ macro_rules! fixed_point_impl {
       }
     }
 
+    impl From<$name> for $value_type {
+      fn from(fixed: $name) -> $value_type {
+        (fixed.epsilons as $value_type) / ((1 << $frac_bits) as $value_type)
+      }
+    }
+
     impl Serialize for $name {
       fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: Serializer {
         self.epsilons.serialize(serializer)
@@ -42,8 +48,7 @@ fixed_point_impl!(Ufixed16P16, 16, 16, u32, f64);
 mod tests {
   use serde_json;
 
-  use super::Sfixed16P16;
-  use super::Ufixed8P8;
+  use crate::{Sfixed16P16, Sfixed8P8, Ufixed16P16, Ufixed8P8};
 
   #[test]
   fn test_eq() {
@@ -67,5 +72,21 @@ mod tests {
   #[test]
   fn test_ufixed8p8() {
     assert_eq!(Ufixed8P8::from_value(24f32).epsilons, 6144);
+  }
+
+  #[test]
+  fn test_ufixed8p8_value() {
+    assert_eq!(f32::from(Ufixed8P8::from_value(24f32)), 24f32);
+    assert_eq!(f32::from(Ufixed8P8::from_value(255f32)), 255f32);
+  }
+
+  #[test]
+  fn test_sfixed8p8_value() {
+    assert_eq!(f32::from(Sfixed8P8::from_value(-24f32)), -24f32);
+  }
+
+  #[test]
+  fn test_ufixed16p16_value() {
+    assert_eq!(f64::from(Ufixed16P16::from_value(1000f64)), 1000f64);
   }
 }
