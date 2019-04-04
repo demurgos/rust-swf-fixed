@@ -1,4 +1,4 @@
-# Next
+# 0.1.2 (2019-04-04)
 
 - **[Feature]** Expose `epsilons` as a public field.
 - **[Feature]** Implement conversion to value type ([#5](https://github.com/open-flash/rust-swf-fixed/issues/5)).
