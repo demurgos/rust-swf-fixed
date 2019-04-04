@@ -28,9 +28,9 @@ This crate defines the fixed points numbers used by SWF files:
 | Name        | Integer part | Fractional part | Min value | Max value     | Epsilon  |
 |-------------|--------------|-----------------|-----------|---------------|----------|
 | Sfixed8P8   | `i8`         | `u8`            | -128      | 128 - 1/256   | 1 / 256  |
-| Ufixed8p8   | `u8`         | `u8`            | 0         | 256 - 1/256   | 1 / 256  |
-| Sfixed16p16 | `i16`        | `u16`           | -2^15     | 2^15 - 1/2^16 | 1 / 2^16 |
-| Ufixed16p16 | `u16`        | `u16`           | 0         | 2^16 - 1/2^16 | 1 / 2^16 |
+| Ufixed8P8   | `u8`         | `u8`            | 0         | 256 - 1/256   | 1 / 256  |
+| Sfixed16P16 | `i16`        | `u16`           | -2^15     | 2^15 - 1/2^16 | 1 / 2^16 |
+| Ufixed16P16 | `u16`        | `u16`           | 0         | 2^16 - 1/2^16 | 1 / 2^16 |
 
 ## Usage
 
