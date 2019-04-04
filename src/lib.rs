@@ -2,7 +2,7 @@ use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 macro_rules! fixed_point_impl {
   ($name:ident, $int_bits:expr, $frac_bits:expr, $epsilons_type:ty, $value_type:ty) => {
-    #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
     pub struct $name {
       pub epsilons: $epsilons_type,
     }
@@ -81,6 +81,11 @@ mod tests {
   #[test]
   fn test_eq() {
     assert_eq!(Sfixed16P16::from_epsilons(3), Sfixed16P16::from_epsilons(3));
+  }
+
+  #[test]
+  fn test_default() {
+    assert_eq!(Sfixed16P16::default(), Sfixed16P16::from_epsilons(0));
   }
 
   #[test]
