@@ -1,4 +1,4 @@
-# Next
+# 0.1.3 (2019-04-05)
 
 - **[Feature]** Mark `from_epsilons` constructor as `const`.
 
