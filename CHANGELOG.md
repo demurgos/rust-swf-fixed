@@ -1,3 +1,7 @@
+# Next
+
+- **[Feature]** Mark `from_epsilons` constructor as `const`.
+
 # 0.1.2 (2019-04-04)
 
 - **[Feature]** Expose `epsilons` as a public field.

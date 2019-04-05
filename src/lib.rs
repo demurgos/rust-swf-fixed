@@ -8,7 +8,7 @@ macro_rules! fixed_point_impl {
     }
 
     impl $name {
-      pub fn from_epsilons(epsilons: $epsilons_type) -> $name {
+      pub const fn from_epsilons(epsilons: $epsilons_type) -> $name {
         $name {epsilons: epsilons}
       }
 
@@ -85,7 +85,14 @@ mod tests {
 
   #[test]
   fn test_default() {
-    assert_eq!(Sfixed16P16::default(), Sfixed16P16::from_epsilons(0));
+    const DEFAULT_SFIXED16P16: Sfixed16P16 = Sfixed16P16::from_epsilons(0);
+    const DEFAULT_SFIXED8P8: Sfixed8P8 = Sfixed8P8::from_epsilons(0);
+    const DEFAULT_UFIXED16P16: Ufixed16P16 = Ufixed16P16::from_epsilons(0);
+    const DEFAULT_UFIXED8P8: Ufixed8P8 = Ufixed8P8::from_epsilons(0);
+    assert_eq!(Sfixed16P16::default(), DEFAULT_SFIXED16P16);
+    assert_eq!(Sfixed8P8::default(), DEFAULT_SFIXED8P8);
+    assert_eq!(Ufixed16P16::default(), DEFAULT_UFIXED16P16);
+    assert_eq!(Ufixed8P8::default(), DEFAULT_UFIXED8P8);
   }
 
   #[test]
