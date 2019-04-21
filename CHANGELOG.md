@@ -1,3 +1,7 @@
+# Next
+
+- **[Internal]** Update to dual MIT/Apache2 license.
+
 # 0.1.3 (2019-04-05)
 
 - **[Feature]** Mark `from_epsilons` constructor as `const`.
