@@ -1,5 +1,6 @@
 # Next
 
+- **[Feature]** Add constants `ZERO` and `ONE` ([#16](https://github.com/open-flash/rust-swf-fixed/issues/16)).
 - **[Internal]** Update to dual MIT/Apache2 license.
 
 # 0.1.3 (2019-04-05)

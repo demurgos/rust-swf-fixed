@@ -8,6 +8,9 @@ macro_rules! fixed_point_impl {
     }
 
     impl $name {
+      pub const ZERO: Self = Self { epsilons: 0 };
+      pub const ONE: Self = Self { epsilons: 1 << $frac_bits };
+
       pub const fn from_epsilons(epsilons: $epsilons_type) -> $name {
         $name {epsilons: epsilons}
       }
@@ -93,6 +96,22 @@ mod tests {
     assert_eq!(Sfixed8P8::default(), DEFAULT_SFIXED8P8);
     assert_eq!(Ufixed16P16::default(), DEFAULT_UFIXED16P16);
     assert_eq!(Ufixed8P8::default(), DEFAULT_UFIXED8P8);
+  }
+
+  #[test]
+  fn test_zero() {
+    assert_eq!(Sfixed16P16::ZERO, Sfixed16P16::from_epsilons(0));
+    assert_eq!(Sfixed8P8::ZERO, Sfixed8P8::from_epsilons(0));
+    assert_eq!(Ufixed16P16::ZERO, Ufixed16P16::from_epsilons(0));
+    assert_eq!(Ufixed8P8::ZERO, Ufixed8P8::from_epsilons(0));
+  }
+
+  #[test]
+  fn test_one() {
+    assert_eq!(Sfixed16P16::ONE, Sfixed16P16::from_epsilons(65536));
+    assert_eq!(Sfixed8P8::ONE, Sfixed8P8::from_epsilons(256));
+    assert_eq!(Ufixed16P16::ONE, Ufixed16P16::from_epsilons(65536));
+    assert_eq!(Ufixed8P8::ONE, Ufixed8P8::from_epsilons(256));
   }
 
   #[test]
