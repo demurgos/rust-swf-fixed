@@ -9,16 +9,18 @@ macro_rules! fixed_point_impl {
 
     impl $name {
       pub const ZERO: Self = Self { epsilons: 0 };
-      pub const ONE: Self = Self { epsilons: 1 << $frac_bits };
+      pub const ONE: Self = Self {
+        epsilons: 1 << $frac_bits,
+      };
 
       pub const fn from_epsilons(epsilons: $epsilons_type) -> $name {
-        $name {epsilons: epsilons}
+        $name { epsilons: epsilons }
       }
 
       pub fn from_value(value: $value_type) -> $name {
         // TODO: Checked cast
         let epsilons: $epsilons_type = (value * ((1 << $frac_bits) as $value_type)) as $epsilons_type;
-        $name {epsilons: epsilons}
+        $name { epsilons: epsilons }
       }
     }
 
@@ -40,7 +42,9 @@ macro_rules! fixed_point_impl {
       type Output = $name;
 
       fn add(self, rhs: &'b $name) -> $name {
-        $name { epsilons: self.epsilons + rhs.epsilons }
+        $name {
+          epsilons: self.epsilons + rhs.epsilons,
+        }
       }
     }
 
@@ -57,17 +61,23 @@ macro_rules! fixed_point_impl {
     }
 
     impl Serialize for $name {
-      fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: Serializer {
+      fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+      where
+        S: Serializer,
+      {
         self.epsilons.serialize(serializer)
       }
     }
 
     impl<'a> Deserialize<'a> for $name {
-      fn deserialize<D>(deserializer: D) -> Result<Self, D::Error> where D: Deserializer<'a> {
+      fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+      where
+        D: Deserializer<'a>,
+      {
         Ok($name::from_epsilons(<$epsilons_type>::deserialize(deserializer)?))
       }
     }
-  }
+  };
 }
 
 fixed_point_impl!(Sfixed8P8, 8, 8, i16, f32);
@@ -121,11 +131,26 @@ mod tests {
 
   #[test]
   fn test_json_serde_deserialization() {
-    assert_eq!(serde_json::from_str::<Sfixed16P16>("0").unwrap(), Sfixed16P16::from_epsilons(0));
-    assert_eq!(serde_json::from_str::<Sfixed16P16>("3").unwrap(), Sfixed16P16::from_epsilons(3));
-    assert_eq!(serde_json::from_str::<Sfixed16P16>("65536").unwrap(), Sfixed16P16::from_epsilons(65536));
-    assert_eq!(serde_json::from_str::<Sfixed16P16>("2147483647").unwrap(), Sfixed16P16::from_epsilons(2147483647));
-    assert_eq!(serde_json::from_str::<Sfixed16P16>("-2147483648").unwrap(), Sfixed16P16::from_epsilons(-2147483648));
+    assert_eq!(
+      serde_json::from_str::<Sfixed16P16>("0").unwrap(),
+      Sfixed16P16::from_epsilons(0)
+    );
+    assert_eq!(
+      serde_json::from_str::<Sfixed16P16>("3").unwrap(),
+      Sfixed16P16::from_epsilons(3)
+    );
+    assert_eq!(
+      serde_json::from_str::<Sfixed16P16>("65536").unwrap(),
+      Sfixed16P16::from_epsilons(65536)
+    );
+    assert_eq!(
+      serde_json::from_str::<Sfixed16P16>("2147483647").unwrap(),
+      Sfixed16P16::from_epsilons(2147483647)
+    );
+    assert_eq!(
+      serde_json::from_str::<Sfixed16P16>("-2147483648").unwrap(),
+      Sfixed16P16::from_epsilons(-2147483648)
+    );
   }
 
   #[test]
@@ -151,19 +176,49 @@ mod tests {
 
   #[test]
   fn test_add_ufixed8p8() {
-    assert_eq!(Ufixed8P8::from_value(0f32) + Ufixed8P8::from_value(0f32), Ufixed8P8::from_value(0f32));
-    assert_eq!(Ufixed8P8::from_value(0f32) + Ufixed8P8::from_value(1f32), Ufixed8P8::from_value(1f32));
-    assert_eq!(Ufixed8P8::from_value(1f32) + Ufixed8P8::from_value(0f32), Ufixed8P8::from_value(1f32));
-    assert_eq!(Ufixed8P8::from_value(1f32) + Ufixed8P8::from_value(1f32), Ufixed8P8::from_value(2f32));
-    assert_eq!(Ufixed8P8::from_value(0.5f32) + Ufixed8P8::from_value(0.5f32), Ufixed8P8::from_value(1f32));
+    assert_eq!(
+      Ufixed8P8::from_value(0f32) + Ufixed8P8::from_value(0f32),
+      Ufixed8P8::from_value(0f32)
+    );
+    assert_eq!(
+      Ufixed8P8::from_value(0f32) + Ufixed8P8::from_value(1f32),
+      Ufixed8P8::from_value(1f32)
+    );
+    assert_eq!(
+      Ufixed8P8::from_value(1f32) + Ufixed8P8::from_value(0f32),
+      Ufixed8P8::from_value(1f32)
+    );
+    assert_eq!(
+      Ufixed8P8::from_value(1f32) + Ufixed8P8::from_value(1f32),
+      Ufixed8P8::from_value(2f32)
+    );
+    assert_eq!(
+      Ufixed8P8::from_value(0.5f32) + Ufixed8P8::from_value(0.5f32),
+      Ufixed8P8::from_value(1f32)
+    );
   }
 
   #[test]
   fn test_add_ufixed8p8_ref() {
-    assert_eq!(&Ufixed8P8::from_value(0f32) + &Ufixed8P8::from_value(0f32), Ufixed8P8::from_value(0f32));
-    assert_eq!(&Ufixed8P8::from_value(0f32) + &Ufixed8P8::from_value(1f32), Ufixed8P8::from_value(1f32));
-    assert_eq!(&Ufixed8P8::from_value(1f32) + &Ufixed8P8::from_value(0f32), Ufixed8P8::from_value(1f32));
-    assert_eq!(&Ufixed8P8::from_value(1f32) + &Ufixed8P8::from_value(1f32), Ufixed8P8::from_value(2f32));
-    assert_eq!(&Ufixed8P8::from_value(0.5f32) + &Ufixed8P8::from_value(0.5f32), Ufixed8P8::from_value(1f32));
+    assert_eq!(
+      &Ufixed8P8::from_value(0f32) + &Ufixed8P8::from_value(0f32),
+      Ufixed8P8::from_value(0f32)
+    );
+    assert_eq!(
+      &Ufixed8P8::from_value(0f32) + &Ufixed8P8::from_value(1f32),
+      Ufixed8P8::from_value(1f32)
+    );
+    assert_eq!(
+      &Ufixed8P8::from_value(1f32) + &Ufixed8P8::from_value(0f32),
+      Ufixed8P8::from_value(1f32)
+    );
+    assert_eq!(
+      &Ufixed8P8::from_value(1f32) + &Ufixed8P8::from_value(1f32),
+      Ufixed8P8::from_value(2f32)
+    );
+    assert_eq!(
+      &Ufixed8P8::from_value(0.5f32) + &Ufixed8P8::from_value(0.5f32),
+      Ufixed8P8::from_value(1f32)
+    );
   }
 }
