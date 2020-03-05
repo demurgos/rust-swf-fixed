@@ -1,5 +1,6 @@
 # Next
 
+- **[Feature]** Move `serde` support into optional `serde` feature ([#19](https://github.com/open-flash/rust-swf-fixed/issues/19)).
 - **[Internal]** Add `rustfmt` integration.
 
 # 0.1.4 (2019-04-22)

@@ -1,3 +1,4 @@
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 macro_rules! fixed_point_impl {
@@ -60,6 +61,7 @@ macro_rules! fixed_point_impl {
       }
     }
 
+    #[cfg(feature = "serde")]
     impl Serialize for $name {
       fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
       where
@@ -69,6 +71,7 @@ macro_rules! fixed_point_impl {
       }
     }
 
+    #[cfg(feature = "serde")]
     impl<'a> Deserialize<'a> for $name {
       fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
       where
@@ -87,6 +90,7 @@ fixed_point_impl!(Ufixed16P16, 16, 16, u32, f64);
 
 #[cfg(test)]
 mod tests {
+  #[cfg(feature = "serde")]
   use serde_json;
 
   use crate::{Sfixed16P16, Sfixed8P8, Ufixed16P16, Ufixed8P8};
@@ -125,11 +129,13 @@ mod tests {
   }
 
   #[test]
+  #[cfg(feature = "serde")]
   fn test_json_serde_serialization() {
     assert_eq!(serde_json::to_string(&Sfixed16P16::from_epsilons(3)).unwrap(), "3");
   }
 
   #[test]
+  #[cfg(feature = "serde")]
   fn test_json_serde_deserialization() {
     assert_eq!(
       serde_json::from_str::<Sfixed16P16>("0").unwrap(),
