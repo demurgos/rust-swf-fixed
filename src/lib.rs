@@ -147,15 +147,15 @@ mod tests {
     );
     assert_eq!(
       serde_json::from_str::<Sfixed16P16>("65536").unwrap(),
-      Sfixed16P16::from_epsilons(65536)
+      Sfixed16P16::from_epsilons(65_536)
     );
     assert_eq!(
       serde_json::from_str::<Sfixed16P16>("2147483647").unwrap(),
-      Sfixed16P16::from_epsilons(2147483647)
+      Sfixed16P16::from_epsilons(2_147_483_647)
     );
     assert_eq!(
       serde_json::from_str::<Sfixed16P16>("-2147483648").unwrap(),
-      Sfixed16P16::from_epsilons(-2147483648)
+      Sfixed16P16::from_epsilons(-2_147_483_648)
     );
   }
 
@@ -166,18 +166,30 @@ mod tests {
 
   #[test]
   fn test_ufixed8p8_value() {
-    assert_eq!(f32::from(Ufixed8P8::from_value(24f32)), 24f32);
-    assert_eq!(f32::from(Ufixed8P8::from_value(255f32)), 255f32);
+    assert_eq!(
+      f32::from(Ufixed8P8::from_value(24f32)).to_ne_bytes(),
+      24f32.to_ne_bytes()
+    );
+    assert_eq!(
+      f32::from(Ufixed8P8::from_value(255f32)).to_ne_bytes(),
+      255f32.to_ne_bytes()
+    );
   }
 
   #[test]
   fn test_sfixed8p8_value() {
-    assert_eq!(f32::from(Sfixed8P8::from_value(-24f32)), -24f32);
+    assert_eq!(
+      f32::from(Sfixed8P8::from_value(-24f32)).to_ne_bytes(),
+      (-24f32).to_ne_bytes()
+    );
   }
 
   #[test]
   fn test_ufixed16p16_value() {
-    assert_eq!(f64::from(Ufixed16P16::from_value(1000f64)), 1000f64);
+    assert_eq!(
+      f64::from(Ufixed16P16::from_value(1000f64)).to_ne_bytes(),
+      1000f64.to_ne_bytes()
+    );
   }
 
   #[test]
@@ -207,23 +219,23 @@ mod tests {
   #[test]
   fn test_add_ufixed8p8_ref() {
     assert_eq!(
-      &Ufixed8P8::from_value(0f32) + &Ufixed8P8::from_value(0f32),
+      Ufixed8P8::from_value(0f32) + Ufixed8P8::from_value(0f32),
       Ufixed8P8::from_value(0f32)
     );
     assert_eq!(
-      &Ufixed8P8::from_value(0f32) + &Ufixed8P8::from_value(1f32),
+      Ufixed8P8::from_value(0f32) + Ufixed8P8::from_value(1f32),
       Ufixed8P8::from_value(1f32)
     );
     assert_eq!(
-      &Ufixed8P8::from_value(1f32) + &Ufixed8P8::from_value(0f32),
+      Ufixed8P8::from_value(1f32) + Ufixed8P8::from_value(0f32),
       Ufixed8P8::from_value(1f32)
     );
     assert_eq!(
-      &Ufixed8P8::from_value(1f32) + &Ufixed8P8::from_value(1f32),
+      Ufixed8P8::from_value(1f32) + Ufixed8P8::from_value(1f32),
       Ufixed8P8::from_value(2f32)
     );
     assert_eq!(
-      &Ufixed8P8::from_value(0.5f32) + &Ufixed8P8::from_value(0.5f32),
+      Ufixed8P8::from_value(0.5f32) + Ufixed8P8::from_value(0.5f32),
       Ufixed8P8::from_value(1f32)
     );
   }
