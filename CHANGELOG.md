@@ -1,6 +1,6 @@
-# Next
+# 0.1.5 (2020-03-06)
 
-- **[Feature]** Move `serde` support into optional `serde` feature ([#19](https://github.com/open-flash/rust-swf-fixed/issues/19)).
+- **[Feature]** Move `serde` support into optional `serde` feature (thanks [@SrKomodo](https://github.com/SrKomodo)) ([#19](https://github.com/open-flash/rust-swf-fixed/issues/19)).
 - **[Internal]** Add `rustfmt` support.
 - **[Internal]** Add `clippy` support.
 
